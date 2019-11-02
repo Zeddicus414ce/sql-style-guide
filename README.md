@@ -37,6 +37,26 @@ select * from final
 ```
 ## Guidelines
 
+### General
+#### Do
+- Use consistent and descriptive identifiers and names.
+- Use two-part names for isolated databases and three-part names when outside databases are being utilized.
+- Make judicious use of white space and indentation to make code easier to read.
+- Store ISO-8601 compliant time and date information (YYYY-MM-DD HH:MM:SS.SSSSS) with DATE, TIME, DATETIME2, and DATETIMEOFFSET.
+- Try to use standard SQL functions instead of Microsoft specific functions for reasons of portability when functionality is the same.
+- Keep code succinct and devoid of redundant SQL—such as unnecessary quoting or parentheses or WHERE clauses that can otherwise be derived.
+- Include comments in SQL code where necessary. Use the C style opening /* and closing */ where possible otherwise precede comments with -- and finish them with a new line.
+- End each statement with a semicolon.
+- Use control-of-flow language when advanced scripting or programmability is used.
+- Supply TRY...CATCH keywords for operationalized DML statements.
+
+#### Don't
+- Plurals—use the more natural collective term where possible instead. For example staff instead of employees or people instead of individuals.
+- Quoted identifiers—if you must use them then stick to SQL92 double quotes for portability (you may need to configure your SQL server to support this depending on vendor).
+- Object oriented design principles should not be applied to SQL or database structures.
+- Using RAISERROR on versions 2012 or greater—THROW is more flexible and succinct.
+- Commenting out old code or large statements that are not in use. Commenting != source control.
+
 ### Use lowercase SQL
 
 It's just as readable as uppercase SQL and you won't have to constantly be holding down a shift key.
