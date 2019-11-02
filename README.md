@@ -1,11 +1,7 @@
 
-# Mazur's SQL Style Guide
+# Zed's SQL Style Guide
 
-Howdy! I'm [Matt Mazur](https://mattmazur.com/) and I'm a data analyst who has worked at several startups to help them use data to grow their businesses. This guide is an attempt to document my preferences for formatting SQL in the hope that it may be of some use to others. If you or your team do not already have a SQL style guide, this may serve as a good starting point which you can adopt and update based on your preferences. 
-
-Also, I'm a strong believer in having [Strong Opinions, Weakly Held](https://medium.com/@ameet/strong-opinions-weakly-held-a-framework-for-thinking-6530d417e364) so if you disagree with any of this, [drop me a note](https://mattmazur.com/contact/), I'd love to discuss it.
-
-If you're interested in this topic, you may also enjoy my [LookML Style Guide](https://github.com/mattm/lookml-style-guide), my [Matt On Analytics](http://eepurl.com/dITJS9) newsletter and my [blog](https://mattmazur.com/category/analytics/) where I write about analytics and data analysis.
+Modified from [Matt Mazur's](https://mattmazur.com/) style guide.
 
 ## Example
 
@@ -13,44 +9,32 @@ Here's a non-trivial query to give you an idea of what this style guide looks li
 
 ```sql
 with hubspot_interest as (
-
     select
         email,
         timestamp_millis(property_beacon_interest) as expressed_interest_at
     from hubspot.contact
     where property_beacon_interest is not null
-
-), 
-
+    ), 
 support_interest as (
-
     select 
         conversation.email,
         conversation.created_at as expressed_interest_at
     from helpscout.conversation
     inner join helpscout.conversation_tag on conversation.id = conversation_tag.conversation_id
     where conversation_tag.tag = 'beacon-interest'
-
-), 
-
+    ), 
 combined_interest as (
-
     select * from hubspot_interest
     union all
     select * from support_interest
-
-),
-
+    ),
 final as (
-
     select 
         email,
         min(expressed_interest_at) as expressed_interest_at
     from combined_interest
     group by email
-
-)
-
+    )
 select * from final
 ```
 ## Guidelines
@@ -186,14 +170,14 @@ from users
 where id = 1234
 ```
 
-When there are multiple, indent each one one level deeper than the `where`. Put logical operators at the end of the previous condition:
+When there are multiple, indent each one one level deeper than the `where`. Put logical operators at the beginning of each line:
 
 ```sql
 select id, email
 from users
 where 
-    created_at >= '2019-03-01' and 
-    vertical = 'work'
+    created_at >= '2019-03-01'
+    and vertical = 'work'
 ```
 
 ### Avoid spaces inside of parenthesis
@@ -354,9 +338,9 @@ select
     users.email,
     sum(charges.amount) as total_revenue
 from users
-inner join charges on 
-    users.id = charges.user_id and
-    refunded = false
+inner join charges
+    on users.id = charges.user_id
+    and refunded = false
 group by email
 ```
 
@@ -393,7 +377,7 @@ Also, if you're working with long or ambiguous table names, it can be useful to 
 select
   companies.com_name,
   beacons.created_at
-from stg_mysql_helpscout__helpscout_companies companies
+from stg_mysql_helpscout__helpscout_companies as companies
 inner join stg_mysql_helpscout__helpscout_beacons_v2 beacons on companies.com_id = beacons.com_id
 
 -- OK: No table aliases
@@ -672,8 +656,4 @@ from billingdaddy.billing_stored_details
 
 This style guide was inspired in part by:
 
-* [Fishtown Analytics' dbt Style Guide](https://github.com/fishtown-analytics/corp/blob/master/dbt_coding_conventions.md#sql-style-guide)
-* [KickStarter's SQL Style Guide](https://gist.github.com/fredbenenson/7bb92718e19138c20591)
-* [GitLab's SQL Style Guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/)
-
-Hat-tip to Peter Butler, Dan Wyman, Simon Ouderkirk, Alex Cano, Adam Stone, Brian Kim, and Claire Carroll for providing feedback on this guide.
+* [Fishtown Analytics' dbt Style Guide](https://github.com/fishtown-analytics/corp/blob/master/dbt_coding_conventions.md#sql-style-guide) 
