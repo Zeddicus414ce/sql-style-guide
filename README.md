@@ -1,8 +1,6 @@
 
 # Zed's SQL Style Guide
 
-Modified from [Matt Mazur's](https://mattmazur.com/) style guide.
-
 ## Example
 
 Here's a non-trivial query to give you an idea of what this style guide looks like in the practice:
@@ -14,7 +12,7 @@ with hubspot_interest as (
         timestamp_millis(property_beacon_interest) as expressed_interest_at
     from hubspot.contact
     where property_beacon_interest is not null
-    ), 
+), 
 support_interest as (
     select 
         conversation.email,
@@ -22,19 +20,19 @@ support_interest as (
     from helpscout.conversation
     inner join helpscout.conversation_tag on conversation.id = conversation_tag.conversation_id
     where conversation_tag.tag = 'beacon-interest'
-    ), 
+), 
 combined_interest as (
     select * from hubspot_interest
     union all
     select * from support_interest
-    ),
+),
 final as (
     select 
         email,
         min(expressed_interest_at) as expressed_interest_at
     from combined_interest
     group by email
-    )
+)
 select * from final
 ```
 ## Guidelines
@@ -579,8 +577,6 @@ from events
 
 Avoid subqueries; CTEs will make your queries easier to read and reason about.
 
-When using CTEs, pad the query with new lines. 
-
 If you use any CTEs, always have a CTE named `final` and `select * from final` at the end. That way you can quickly inspect the output of other CTEs used in the query to debug the results.
 
 Closing CTE parentheses should use the same indentation level as `with` and the CTE names.
@@ -588,23 +584,17 @@ Closing CTE parentheses should use the same indentation level as `with` and the 
 ```sql
 -- Good
 with ordered_details as (
-
     select
         user_id,
         name,
         row_number() over (partition by user_id order by date_updated desc) as details_rank
     from billingdaddy.billing_stored_details
-
 ),
-
 final as (
-
     select user_id, name
     from ordered_details
     where details_rank = 1
-
 )
-
 select * from final
 
 -- Bad
@@ -656,4 +646,5 @@ from billingdaddy.billing_stored_details
 
 This style guide was inspired in part by:
 
-* [Fishtown Analytics' dbt Style Guide](https://github.com/fishtown-analytics/corp/blob/master/dbt_coding_conventions.md#sql-style-guide) 
+* [Matt Mazur's SQL Style Guide](https://github.com/mattm/sql-style-guide)
+* [John McCall's T-SQL Style Guide](https://tsqlstyle.lowlydba.com/)
