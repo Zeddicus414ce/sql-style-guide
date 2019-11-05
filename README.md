@@ -195,6 +195,8 @@ WHERE
     AND vertical = 'work'
 ```
 
+If some logical operators are extremely coupled (cannot exist or be correct without each other) they may be placed on the same line.
+
 ### Avoid spaces inside of parenthesis
 
 ```sql
