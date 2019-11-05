@@ -249,7 +249,7 @@ FROM users
 SELECT
     id,
     email,
-    timestamp_trunc(created_at, month) AS SignupMonth
+    TIMESTAMP_TRUNC(created_at, month) AS SignupMonth
 FROM users
 ```
 
@@ -464,7 +464,7 @@ FROM hubspot.contact
 WHERE property_beacon_interest IS NOT null
 
 -- Bad
-SELECT timestamp_millis(property_beacon_interest)
+SELECT TIMESTAMP_MILLIS(property_beacon_interest)
 FROM hubspot.contact
 WHERE property_beacon_interest IS NOT null
 ```
@@ -488,14 +488,14 @@ SELECT * FROM customers WHERE not is_cancelled
 SELECT
     id,
     email,
-    timestamp_trunc(created_at, month) AS signup_month
+    TIMESTAMP_TRUNC(created_at, month) AS signup_month
 FROM users
 
 -- Bad
 SELECT
     id,
     email,
-    timestamp_trunc(created_at, month) signup_month
+    TIMESTAMP_TRUNC(created_at, month) signup_month
 FROM users
 ```
 
@@ -650,7 +650,7 @@ SELECT
     name,
     ROW_NUMBER() OVER (
         PARTITION BY user_id
-        ORDER by date_updated desc
+        ORDER by date_updated DESC
     ) AS details_rank
 FROM billingdaddy.billing_stored_details
 ```
